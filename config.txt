@@ -1,0 +1,14 @@
+PROJECT="COPY DB"
+CONTAINER_NAME="MariaDB"
+DBNAME="threeWeek"
+USER=root
+PASSWORD=root
+BACKUP_DIR="/home/alex/Desktop/bdbash/dump"
+TODAY="$(date +'%Y-%m-%d-%S')"
+BACKUP_FILE="$BACKUP_DIR/$TODAY.sql"
+FIRST_SERVER_IP="ec2-52-91-174-54.compute-1.amazonaws.com"
+FIRST_SERVER_USER="ec2-user"
+FIRST_SERVER_DIR="/home/ec2-user/dump"
+FIRST_SERVER_PEM="/home/alex/Downloads/bash.pem"
+
+
