@@ -1,23 +1,21 @@
 #!/bin/bash
 
-config_file="config.txt"
+DUMPBASH_DIR=$(dirname "$0")
+
+config_file="$DUMPBASH_DIR/config.txt"
 
 source $config_file
 
-mysqldump -u "$USER" -p"$PASSWORD" "$DBNAME" > "$BACKUP_FILE"
+ mysqldump -u "$USER" -p"$PASSWORD" "$DBNAME" | gzip -c > "$BACKUP_DIR/$TODAY".gz
 
 if [ $? -eq 0 ]; then
 	echo "Success"
-
-	tar -czvf "$BACKUP_DIR/$TODAY.tar.gz" "$BACKUP_FILE"
-
-	ARCHIVE_NAME="$BACKUP_DIR/$TODAY.tar.gz"
-
-	scp -i "$FIRST_SERVER_PEM" "$ARCHIVE_NAME" "$FIRST_SERVER_USER"@"$FIRST_SERVER_IP":/"$FIRST_SERVER_DIR"
 	
-
+	TARGZ_NAME="$BACKUP_DIR/$TODAY.gz"
+	scp -i "$FIRST_SERVER_PEM" "$TARGZ_NAME" "$FIRST_SERVER_USER"@"$FIRST_SERVER_IP":/"$FIRST_SERVER_DIR"
+	
 	if [ $? -eq 0 ]; then
-		echo "Success tar and copy on remote Server"
+		echo "Success copy on remote Server"
 	else
 		echo "Error"
 	fi
